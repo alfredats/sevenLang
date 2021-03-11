@@ -1,0 +1,133 @@
+#+TITLE: Literate Ruby
+
+Note: This was written while working with ruby 2.6.6, so YMMV
+
+* Keypoints from each "day"
+** Day 1: Finding a Nanny
+*** Notes
+*Ruby is an interpreted language*
+- It doesn't get compiled to bytecode before being executed (like C)
+
+*Ruby is a pure object-oriented language*
+- Everything in ruby is a class. A number is considered a literal in python, but it's a class (=Fixnum=) in ruby.
+- Each class has its own methods, accessed =<class>.methods=
+
+*Conditionals in ruby*
+- Other than your typical =if then else= structure, ruby has a =unless= conditional
+- You can have single line conditionals like =<statement> if <condition>= or =<statement> unless <condition>=
+
+*Flow control*
+- =while= and =until= are used somewhat interchangeably
+
+*Truthy/Falsy values*
+- Everything but =nil= and =false= evaluate to =true=
+
+*Logical Operators*
+- =and=, =&&= are logical conjunction
+- =or= , =||= are logical disjunction
+
+*Typing*
+- Ruby is strongly (it'll make a fuss if types collide) and dynamically (typechecks only on code execution) typed.
+- But with duckTyping (ala "if it walks and quacks like a duck, it is a duck"), we can use =quack= methods to make sure our code doesn't have weird effects.
+
+*** Self-study
+*Find*
+1) https://rubyapi.org/
+2) http://ruby-doc.com/docs/ProgrammingRuby/
+3) https://rubyapi.org/2.6/o/string#method-i-sub
+4) https://rubyapi.org/2.6/o/regexp
+5) https://rubyapi.org/2.6/o/range
+
+*Do*
+1) Print "hello, world."
+   #+begin_src ruby :results output code
+   puts "Hello, world."
+   #+end_src
+
+   #+RESULTS:
+   #+begin_src ruby
+   Hello, world.
+   #+end_src
+
+2) find the index of the word "Ruby." in "hello, Ruby."
+   #+begin_src ruby :results value code
+   "Hello, Ruby.".index("Ruby.")
+   #+end_src
+
+   #+RESULTS:
+   #+begin_src ruby
+   7
+   #+end_src
+
+3) print your name 10 times
+   #+begin_src ruby :results output code
+   i = 0
+   until i == 10
+     puts "your name"
+     i = i + 1
+   end
+
+   while i < 20
+     puts "your name again"
+     i = i + 1
+   end
+   #+end_src
+
+   #+RESULTS:
+   #+begin_src ruby
+   your name
+   your name
+   your name
+   your name
+   your name
+   your name
+   your name
+   your name
+   your name
+   your name
+   your name again
+   your name again
+   your name again
+   your name again
+   your name again
+   your name again
+   your name again
+   your name again
+   your name again
+   your name again
+   #+end_src
+
+4) print the string "this is sentence number 1" where the number 1 changes from 1 to 10
+    #+begin_src ruby :results output code
+    ('1'..'10').each {|x| puts "this is sentence " + x}
+    #+end_src
+
+    #+RESULTS:
+    #+begin_src ruby
+    this is sentence 1
+    this is sentence 2
+    this is sentence 3
+    this is sentence 4
+    this is sentence 5
+    this is sentence 6
+    this is sentence 7
+    this is sentence 8
+    this is sentence 9
+    this is sentence 10
+    #+end_src
+
+5) run a ruby program from a file
+
+   Note: I'm running my ruby from within a virtual environment set up with nix & ruby, so I have to run ruby files with nix-shell
+  #+begin_src ruby :tangle helloWorld.rb
+    puts "hello world from within a ruby file!"
+  #+end_src
+
+  #+begin_src bash :results output code :dir ~/Code/alfredats/sevenLang
+    nix-shell --run "ruby ruby/helloWorld.rb"
+  #+end_src
+
+  #+RESULTS:
+  #+begin_src bash
+  hello world from within a ruby file!
+  #+end_src
