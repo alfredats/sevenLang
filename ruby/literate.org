@@ -129,5 +129,18 @@ Note: This was written while working with ruby 2.6.6, so YMMV
 
   #+RESULTS:
   #+begin_src bash
-  hello world from within a ruby file!
+    hello world from within a ruby file!
   #+end_src
+
+6) Bonus problem: write a program that picks a random number. Let a player guess the number with feedback on whether the guess is too high/low
+   #+begin_src ruby :tangle guessNumber.rb
+    secret_number = rand(10)
+    guessed_number = nil
+    until guessed_number == secret_number
+        puts "Pick a number from 0 to 10" if guessed_number.nil?
+        guessed_number = gets.chomp.to_i
+        puts "Too higher, try lower" if guessed_number > secret_number
+        puts "Too low, try higher"   if guessed_number < secret_number
+    end
+    puts "You guessed it!"
+   #+end_src
