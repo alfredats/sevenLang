@@ -144,3 +144,224 @@ Note: This was written while working with ruby 2.6.6, so YMMV
     end
     puts "You guessed it!"
    #+end_src
+
+
+** Day 2: Floating down from the Sky
+*** Notes
+*Defining Functions*
+- Essentially the same as python, but with ruby all functions must return a value (do it explicitly as a best practice)
+- Technically, no named parameters for functions. But there are ways to circumvent this with hash symbols.
+
+*Arrays*
+- Have to be initialized before use
+- Also relatively similar to python lists, with negative indices allowed
+- Returns =nil= if out-of-index, instead of throwing an aerror
+- Splicing is done with ranges as used in day1
+- Arrays can contain elements of different types
+
+*Hashes*
+- Similar to python dictionaries, but denoted with a preceding colon like =:symbol=
+- symbols (keys in python) are unique values (check out the =.object_id= method on a symbol vs a string several times)
+- The =\=>= operator denotes hash-value (key-value) pairs
+
+*Code Blocks*
+- the ruby analogue of lambda functions
+- denoted by either a ={}= or a =do/end=
+- lots of good examples on functions in this section, refer if stuck
+
+*Defining Classes*
+- Everything is a class. All objects in ruby inherit from the root class =Object=.
+- Even higher-order structures like =Class= and =Module= (ruby's version of a typeclass) inherit from =Object=
+- Ruby does not support multiple inheritance, and chooses to use mix-ins instead.
+- Example class definition:
+  #+begin_src ruby :tangle tree.rb
+    class Tree
+      # this tells ruby that we want .children and .node_name as instance variables, with accessor and setter methods with the same name
+      attr_accessor :children, :node_name
+      # if we used the 'attr' keyword instead, we only get the instance variable & an accessor (instance variable will not have setter method)
+
+      def initialize(name, children=[])
+        @children  = children       # instance variables are denoted by preceding '@', class variables '@@''
+        @node_name = name
+      end
+
+      def visit_all(&block)
+        visit &block
+        children.each { |e| e.visit_all &block }
+      end
+
+      def visit(&block)
+        block.call self
+      end
+    end
+
+    ruby_tree = Tree.new( "ruby",
+                          [ Tree.new("Reia"),
+                            Tree.new("MacRuby")
+                          ])
+
+    puts "Visiting a node"
+    ruby_tree.visit { |node| puts node.node_name }
+    puts
+
+    puts "visiting entire tree"
+    ruby_tree.visit_all { |node| puts node.node_name }
+  #+end_src
+
+*Mixins*
+- Mixins are achieved with writing =modules= (analogue to typeclasses in haskell)
+- When a module is included as part of a class, the behaviors and constants become part of the class
+- Example module + class that uses module
+  #+begin_src ruby :tangle to_file.rb
+    module ToFile
+      def filename
+        "object_#{self.object_id}.txt"
+        # recall that ruby functions must return a value
+        # in this case, it returns the value of the last line within the function,
+        # which is the string.
+        #
+        # The string itself also is formatted with #{}
+      end
+
+      def to_f
+        File.open(filename,'w') { |f| f.write(to_s) }
+      end
+    end
+
+    class Person
+      include ToFile
+      attr_accessor :name
+
+      def initialize(name)
+        @name = name
+      end
+
+      def to_s
+        name
+      end
+    end
+
+    Person.new('matz').to_f
+  #+end_src
+
+- Two of the key mixins are =enumerable= and =comparable=.
+    - An =enumerable= class must have the =each= method
+    - A =comparable= class must have =<=>= (spaceship) method
+
+*Map-Reduce operations*
+- =.inject= is the equivalent of =foldr= in haskell
+
+
+*** Self-study
+*Find*
+1) How to access files with and without codeblocks?
+
+   #+begin_src ruby :results output code
+     # With a code block
+     File.open("literate.org","r") do |filepointer|
+       content = filepointer.gets() # this only reads one line though
+       puts content
+     end
+
+     # Without a code block
+     content2 = IO.readlines("literate.org")
+     puts content2[0]
+   #+end_src
+
+   #+RESULTS:
+   #+begin_src ruby
+   ,#+TITLE: Literate Ruby
+   ,#+TITLE: Literate Ruby
+   #+end_src
+
+2) How do you translate a hash into an array?
+   #+begin_src ruby :results output code
+     my_fav_foods = {:"1" => "Chirashi-don",
+                     :"2" => "Scrambled eggs",
+                     :"3" => "Fried Chicken"}
+
+     foods_array = []
+     # alternatively we can just do
+     # foods_array = my_fav_foods.values
+     my_fav_foods.each { |key,value| foods_array.push(value) }
+
+     puts foods_array.inspect
+
+     # i wonder if there's a way to do this with inject
+     new_fav_foods = {}
+     foods_array.each_index { |index| new_fav_foods[index.to_s.to_sym] = foods_array[index] }
+     puts new_fav_foods
+   #+end_src
+
+   #+RESULTS:
+   #+begin_src ruby
+   ["Chirashi-don", "Scrambled eggs", "Fried Chicken"]
+   {:"0"=>"Chirashi-don", :"1"=>"Scrambled eggs", :"2"=>"Fried Chicken"}
+   #+end_src
+
+3) Can you iterate through a hash?
+   - see (2)
+
+4) What other common data structures do ruby arrays support?
+   - With the =|=, =&= operators and =.uniq= method, we can have basic sets
+   - With =.shift= and =.push=, we have queues
+
+*Do*
+1) Print the contents of an array of sixteen numbers, four numbers at a time, using =each=. Then do it with =each_slice= in =Enumerable=
+
+  #+begin_src ruby :results output code
+    sixteen_numbers = Array.new(16) { |e| e = rand(16) }
+
+    puts "printing with .each"
+    (0..sixteen_numbers.length).step(4).each do |index|
+      puts sixteen_numbers[index-4..index].inspect if index != 0
+    end
+
+    puts
+    puts "printing with .each_slice from enumerable"
+    sixteen_numbers.each_slice(4) { |arr| puts arr.inspect }
+  #+end_src
+
+  #+RESULTS:
+  #+begin_src ruby
+  printing with .each
+  [6, 8, 4, 7, 6]
+  [6, 12, 7, 9, 12]
+  [12, 5, 11, 2, 15]
+  [15, 15, 9, 8]
+
+  printing with .each_slice from enumerable
+  [6, 8, 4, 7]
+  [6, 12, 7, 9]
+  [12, 5, 11, 2]
+  [15, 15, 9, 8]
+  #+end_src
+
+2) Write a new =Tree= class with an initializer that accepts a nested structure of hashes.
+
+  #+begin_src ruby :tangle newTree.rb
+    class Tree
+      include Enumerable
+      attr_accessor :children, :node_name
+
+      def initialize(init={})
+        init.each do |key, value|
+          @node_name = key
+          @children = Tree.new(value)
+        end
+      end
+
+      def visit(&block)
+       block.call self
+      end
+    end
+
+    ruby_tree = Tree.new( {"grandpa" => {"dad"   => {"child 1" => {}, "child 2" => {} },
+                                         "uncle" => {"child 3" => {}, "child 4" => {} } } } )
+
+    # how to replicate previous behavior?
+    ruby_tree.visit do |node|
+      puts node.node_name
+      puts node.children
+    end
+  #+end_src
