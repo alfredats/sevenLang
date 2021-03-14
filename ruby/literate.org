@@ -365,3 +365,26 @@ Note: This was written while working with ruby 2.6.6, so YMMV
       puts node.children
     end
   #+end_src
+
+3) Write a simple grep that will print the lines of a file having any occurences of a phrase anywhere in the line.
+  #+begin_src ruby :tangle grep.rb
+    #!/nix/store/nbf3gwfs1cp1lks5lgn0rambhn6czb0r-ruby-2.6.6/bin/ruby
+    # Implement a simple grep
+    # - Grep takes 2 arguments, a regexp and a filename.
+
+    if ARGV.length != 2
+      puts "Usage: ./grep.rb <pattern> <filename>"
+      puts "Note: Ruby's regexp requires the expression sandwiched between two forward-slashes (/) "
+    end
+
+    pattern = Regexp.new(ARGV[0])
+    content = IO.readlines(ARGV[1])
+
+    i = 0
+    begin
+      if pattern.match(content[i])
+        puts "#{i}: #{content[i]}"
+      end
+      i = i + 1
+    end while i < content.length
+  #+end_src
