@@ -93,7 +93,43 @@ Note: I am using the swi flavor of prolog. YMMV.
     Prolog works through all possible combinations of X & Y based on the facts and information available within the goals.
 
 *** Self-Study
+*Find*
 1) https://www.cpp.edu/~jrfisher/www/prolog_tutorial/contents.html
    http://www.lix.polytechnique.fr/~liberti/public/computing/prog/prolog/prolog-tutorial.html
 2) https://swi-prolog.discourse.group/
 3) SWI Prolog: https://www.swi-prolog.org/pldoc/man?section=quickstart
+
+*Do*
+1)
+     #+begin_src prolog :tangle books.pl
+       author(norwegianWood,murakami).
+       author(oneQ84, murakami).
+       author(colorlessTsukuru, murakami).
+       author(neverLetMeGo, ishiguro).
+       author(devotionOfSuspectX, higashino).
+       author(doAndroidsDreamOfElectricSheep, philipKdick).
+
+       books(Y,L) :- findall(X, author(X,Y), L).
+     #+end_src
+
+2) running =books(murakami, L)= yields =L = [norwegianWood, oneQ84, colorlessTsukuru].=
+
+3)
+   #+begin_src prolog :tangle music.pl
+     instrument(hendrix, guitar).
+     instrument(eddieVanHalen, guitar).
+     instrument(axelRose, guitar).
+     instrument(dukeEllington, piano).
+     instrument(theloniousMonk, piano).
+     instrument(louisArmstrong, trumpet).
+
+     genre(hendrix,rock).
+     genre(eddieVanHalen, rock).
+     genre(axelRose, rock).
+     genre(dukeEllington, jazz).
+     genre(theloniousMonk, jazz).
+     genre(louisArmstrong, jazz).
+
+
+     instrumentalists(Y,L) :- findall(X, instrument(X,Y), L).
+   #+end_src
