@@ -4,5 +4,5 @@
 
     # EDIT: Turns out you don't need to prepend the package name with pkg.buildPackages.<package>
     # Also, to find out what packages are available for use, https://search.nixos.org
-    nativeBuildInputs = [ pkgs.ruby ];
+    nativeBuildInputs = [ pkgs.ruby pkgs.swiProlog ];
 }

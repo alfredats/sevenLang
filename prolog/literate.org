@@ -1,0 +1,99 @@
+#+TITLE: Prolog
+
+Note: I am using the swi flavor of prolog. YMMV.
+
+* Notes from each day:
+** Day 1: An excellent driver
+*** Notes
+*Intro*
+- Prolog is a rules-based language for expressing logic and asking questions
+- Prolog expressions are made up of logical rules & relationships, and also queries
+- Prolog is about describing the world through the logical rules & relationships, then presenting logical problems with queries that the computer can then try to solve.
+- This means we don't actually have to write the logic!
+
+
+*syntax*
+- beginning a word with a lowercased char tells prolog that it is an atomic fact, or an atom for short 
+- beginning a word with a uppercased char or underscore -> variable
+
+- Here's an example of a prolog file  
+ #+begin_src prolog :tangle friends.pl
+   likes(wallace,cheese). % these are facts. This line particularly reads like "wallace likes cheese".
+   likes(grommit,cheese).
+   likes(wendolene,sheep).
+
+   friend(X,Y) :- \+(X = Y),likes(X,Z),likes(Y,Z). % these are rules
+   % specifically, this rule is known as friend/2 (the friend rule with 2 parameters)
+   % it consists of 3 subgoals (X & Y cannot be the same, X must like Z, Y must like Z)
+   % all three must be true for this rule to be true
+#+end_src
+
+- within rules, =:-= denotes a subgoal, =\+= does logical negation
+- Within the prolog repl, =['friends'].= loads the above file. It returns =true.= when successful
+
+
+*queries*
+- consider the following knowledge base
+  #+begin_src prolog :tangle food.pl
+    food_type(velveeta, cheese). % "velveeta is a food_type of cheese"
+    food_type(ritz, cracker).
+    food_type(spam, meat).
+    food_type(sausage, meat).
+    food_type(jolt, soda).
+    food_type(twinkle, dessert).
+
+    flavor(sweet, dessert).
+    flavor(savory, meat).
+    flavor(savory, cheese).
+    flavor(sweet, soda).
+
+    food_flavor(X, Y) :- food_type(X,Z), flavor(Y,Z).
+
+  #+end_src
+
+- load the =food.pl= file and execute a query =food_type(What, meat).=, prolog returns a single answer.
+- use =;= to ask prolog to find another.
+
+
+*Binding & Unification*
+- === is not variable assignment, but is a unification operation (think of it like how C handles variable references)
+- unification operator === is infix, and tries to make the structures involved identical
+
+  #+begin_src prolog :tangle ohmy.pl
+    cat(lion).
+    cat(tiger).
+
+    dorothy(X,Y,Z) :- X=lion, Y=tiger, Z=bear.
+    twin_cats(X,Y) :- cat(X), cat(Y).
+
+  #+end_src
+
+- loading the database and running the query =dorothy(One,Two,Three).= returns
+  #+begin_src prolog
+    ?- dorothy(One,Two,Three).
+    One = lion,
+    Two = tiger,
+    Three = bear.
+
+  #+end_src
+
+  In this case, prolog unifies =X,Y,Z= to =lion, tiger, bear= within the goals of =dorothy=. Afterwhich, it unifies =X,Y,Z= to =One, Two, Three=.
+
+  - if we ran =twin_cats(One,Two).= instead, we get
+    #+begin_src prolog
+      ?- twin_cats(One,Two).
+      One = Two, Two = lion ;
+      One = lion,
+      Two = tiger ;
+      One = tiger,
+      Two = lion ;
+      One = Two, Two = tiger.
+    #+end_src
+
+    Prolog works through all possible combinations of X & Y based on the facts and information available within the goals.
+
+*** Self-Study
+1) https://www.cpp.edu/~jrfisher/www/prolog_tutorial/contents.html
+   http://www.lix.polytechnique.fr/~liberti/public/computing/prog/prolog/prolog-tutorial.html
+2) https://swi-prolog.discourse.group/
+3) SWI Prolog: https://www.swi-prolog.org/pldoc/man?section=quickstart
