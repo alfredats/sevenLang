@@ -133,3 +133,64 @@ Note: I am using the swi flavor of prolog. YMMV.
 
      instrumentalists(Y,L) :- findall(X, instrument(X,Y), L).
    #+end_src
+
+** Day 2: Fifteen Minutes to Wapner
+*** Notes
+- A rule can have multiple clauses; only one of them needs to be true for the rule to be true
+- Take the following:
+  #+begin_src prolog :tangle family.pl
+    father(david, job).
+    father(job, michael).
+
+    % a rule can have multiple clauses
+    ancestor(X,Y) :-
+        father(X,Y).
+    ancestor(X,Y) :-
+        father(X,Z),
+        ancestor(Z,Y).
+  #+end_src
+
+  The =ancestor/2= rule here reads as follows:
+
+        X is an ancestor of Y if
+            either
+                X is the father of Y
+            or
+                X is the father of Z and Z is the ancestor of Y
+
+- Predicates can also be queried in reverse
+- Recursive rules can sometimes cause stack overflow. When it does, try tail recursive optimization.
+
+*Lists & Tuples*
+- Lists and tuples are denoted [a,b,c] and (1,2,3) respectively
+- Their strengths come out with unification operations within prolog
+
+
+- Tuples unify element-wise strictly
+- A tuple unification with variables on both sides is possible
+  #+begin_src prolog
+    ?- (A,2,C)=(1,B,3).
+
+    A = 1,
+    B = 2,
+    C = 3.
+
+  #+end_src
+
+
+- List unification has one added feature, =|=
+  #+begin_src prolog
+    ?- [1,2,3]=[A|B].
+    A = 1,
+    B = [2,3].
+
+    ?- [1]=[A|B].
+    A = 1,
+    B = [].
+
+    ?- []=[A|B].
+    false.
+
+    ?- [a, b, c, d, e] = [_, _|[H|_]].
+    H = c.
+  #+end_src
