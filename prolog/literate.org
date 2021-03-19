@@ -194,3 +194,130 @@ Note: I am using the swi flavor of prolog. YMMV.
     ?- [a, b, c, d, e] = [_, _|[H|_]].
     H = c.
   #+end_src
+
+- recursive math w/ lists can be done as follows:
+  #+begin_src prolog :tangle math.pl
+    count(0,[]). % the base case; an empty list has count 0
+    count(Count,[_|T]) :- count(TCount, T), Count is TCount + 1. % note the "is" operator
+
+    sum(0,[]).
+    sum(Total,[H|T]) :- sum(Sum,T), Total is H + Sum.
+
+    % I'm guessing prolog handles the type checking for average?
+    average(Avg, List) :- sum(Sum,List), count(Count,List), Avg is Sum/Count.
+
+  #+end_src
+
+- =append\3= can be quite useful
+  #+begin_src prolog
+    ?- append([oil], [water], [oil, water]).
+    true.
+
+
+    ?- append([oil], [water], [oil, slick]).
+    false.
+
+
+    ?- append([tiny], [bubbles], What).
+    What = [tiny,bubbles].
+
+
+    ?- append([dessert_topping], Who, [dessert_topping, floor_wax]).
+    Who = [floor_wax].
+
+
+    ?- append(One, Two, [apples, oranges, bananas]).​
+    One = [],
+    Two = [apples,oranges,bananas] ;
+    One = [apples],
+    Two = [oranges,bananas] ;
+    One = [apples,oranges],
+    Two = [bananas] ;
+    One = [apples,oranges,bananas],
+    Two = [] ;
+    false.
+  #+end_src
+
+we can write our own version of =append/3= as follows:
+#+begin_src prolog :tangle concatenate.pl
+  % this is our base case; appending an empty list to anything returns itself.
+  concatenate([],List,List).
+
+  concatenate([H|[]], List, [H|List]) % concatenating a single-element list to another list.
+  concatenate([H1|[H2|[]]],List, [H1,H2|List]).
+  concatenate([H1|[H2|[H3|[]]]],List, [H1,H2,H3|List])
+
+  % ... so on and so forth...
+
+
+  % we can generalize the inductive rules as follows:
+  concatenate([H|T1],List,[H|T2]) :- concatenate(T1,List,T2).
+  % recall that Y :- X is read as: if X then Y (X implies Y)
+  % the above statement then reads as
+  %       if the concatenation of the first list's tail & the second list is the third lists tail,
+  %           and the heads of the first and third lists are the same,
+  %               then the concatenation of the first list and the second list is the third.
+  %
+  % concretely,
+  %   this means that the tail of the first list is traversed until we reach an empty list,
+  %       then the base case is proven true, after which the recursed implications are inductively true as well.
+
+#+end_src
+
+*** Self-study
+*Find*
+1) I didn't wanna find them, so I just tried writing them myself.
+   #+begin_src prolog :tangle fibonacci.pl
+     % base cases
+     fibonacci(0,0).
+     fibonacci(1,1).
+
+     % general recursive case.
+     fibonacci(N,X) :-
+         N > 1,
+         succ(N1,N),
+         succ(N2,N1),
+         fibonacci(N1,S1),
+         fibonacci(N2,S2),
+         X is S1+S2.
+   #+end_src
+
+Halfway through writing this I got stuck because I was using =fibonacci(N-1,S1)= and =fibonacci(N-2,S2)=. Prolog doesn't allow mathematical operations like =2-1= in general, so I had to consult http://cubbi.com/fibonacci/prolog.html
+
+pretty cool stuff on the website.
+
+2)
+
+3)
+
+
+*Do*
+1) Reverse the elements of a list
+   #+begin_src prolog :tangle listReverse.pl
+     reverse([H|T],List) :-
+         reverse(T,Hprime),
+         append(Hprime,[H],List).
+   #+end_src
+
+2) Find the smallest element of a list
+   #+begin_src prolog :tangle smallest.pl
+     smallest([Min],Min).
+     smallest([H1,H2|T],Min) :-
+         H3 is min(H1,H2),
+         smallest([H3|T],Min).
+   #+end_src
+
+3) Sort the elements of a list (I guess it's time to bubblesort?)
+   #+begin_src prolog :tangle bubble.pl
+     bubblesort([H|T],Sorted) :-
+         bubblesort([H|T],[H], Sorted).
+
+     bubblesort([],SL,SL).
+     bubblesort([H|T],[H2|T2],SL) :-
+         H =< H2,
+         bubblesort(T,[H,H2|T2],SL).
+     bubblesort([H|T],[H2|T2],SL) :-
+         H > H2,
+         bubblesort([H],T2,TN),
+         bubblesort(T,[H2|TN],SL).
+   #+end_src
