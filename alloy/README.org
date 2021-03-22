@@ -1,0 +1,14 @@
+#+TITLE: Alloy
+
+I'm following the tutorial here: https://alloytools.org/tutorials/online/index.html
+
+Running alloy from the jar file on an openJDK JVM.
+
+* Lesson 0
+
+- We write models to describe system so we can check properties about it
+- These models typically require some constraints to exclude ill-formed exampleship
+
+- Main problems faced when writing models:
+  + bugs due to over/under-constraining models when writing
+  + errors in modelled subject (human error)
