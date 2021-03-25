@@ -1,0 +1,56 @@
+#+TITLE: Io
+
+* About Io's installation
+The nix package currently available is not compatible with macbooks. So I installed it with =brew= instead.
+emacs' babel code blocks do not have support for io, so i'm labelling them as python.
+
+
+* Notes from each day
+** Day 1: Skipping School, Hanging out
+*** Notes
+Io is a prototype language, similar to Javascript. This means that every object is a clone of another.
+
+Its main draws are:
+- simplicity and customizability of syntax & functions
+- concurrency functionality
+
+Observe how the prototype programming model works.
+
+*Basic concepts*
+- The syntax of io chains messages together, with each message taking optional parameters in parentheses & returning an object.
+- The "paradigm" with io is that everything is a message that returns another receiver.
+- io has no reserved keywords, choosing to keep only some characters reserved
+- io has no classes, and works exclusively in objects
+
+
+*Basic syntax*
+
+- In this example, we are sending the =print= message to the ="Hello, world!"= string. The structure with io is =<receiver> <message>=.
+  #+begin_src python
+"Hello, world!" print
+  #+end_src
+
+- Here we create a new object by cloning from =prototypes=
+ #+begin_src python
+Vehicle := Object clone
+ #+end_src
+
+   We send a clone message to the root-level object, =Object=. =Object= then returns a new object, and we assign it to =Vehicle=, which in turn becomes an object based on the =Object= prototype. Note that =Vehicle= is NOT a class nor an object template.
+
+- Objects have "slots", which behave like a key-value hash.
+  #+begin_src python
+Vehicle year        ::= "2010" # creates slot, creates setter, assigns value; newSlot
+Vehicle description  := "Something to take you places" # creates slot, assigns value; setSlot
+Vehicle model         = "Ford Focus" #assigns value to slot if exists, else exception; updateSlot
+  #+end_src
+
+- We can think of objects as collections of slots.
+#+begin_src python
+Vehicle slotNames # returns list("type","year","description")      - model isn't here because the slot wasn't created when we used "="
+#+end_src
+
+- Every object has a type slot
+  #+begin_src python
+Vehicle type # returns Vehicle
+Object type # returns Object
+  #+end_src
