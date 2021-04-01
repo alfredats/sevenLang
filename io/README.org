@@ -26,31 +26,133 @@ Observe how the prototype programming model works.
 *Basic syntax*
 
 - In this example, we are sending the =print= message to the ="Hello, world!"= string. The structure with io is =<receiver> <message>=.
-  #+begin_src python
+  #+begin_src io
 "Hello, world!" print
   #+end_src
 
+  #+RESULTS:
+  : Hello, world!Hello, world!
+
 - Here we create a new object by cloning from =prototypes=
- #+begin_src python
+ #+begin_src io
 Vehicle := Object clone
  #+end_src
+
+ #+RESULTS:
+ :  Vehicle_0x7fb2fc40a5b0:
+ :   type             = "Vehicle"
 
    We send a clone message to the root-level object, =Object=. =Object= then returns a new object, and we assign it to =Vehicle=, which in turn becomes an object based on the =Object= prototype. Note that =Vehicle= is NOT a class nor an object template.
 
 - Objects have "slots", which behave like a key-value hash.
-  #+begin_src python
+  #+begin_src io
 Vehicle year        ::= "2010" # creates slot, creates setter, assigns value; newSlot
 Vehicle description  := "Something to take you places" # creates slot, assigns value; setSlot
 Vehicle model         = "Ford Focus" #assigns value to slot if exists, else exception; updateSlot
   #+end_src
 
-- We can think of objects as collections of slots.
+
+- think of objects as *collections of slots*.
 #+begin_src python
 Vehicle slotNames # returns list("type","year","description")      - model isn't here because the slot wasn't created when we used "="
 #+end_src
 
-- Every object has a type slot
+- ~Every~ object has a type slot
   #+begin_src python
 Vehicle type # returns Vehicle
 Object type # returns Object
   #+end_src
+
+
+
+*Clones, Prototypes & Inheritance*
+prototype OOP languages like io & javascript handle inheritance slightly differently from class-based (or "class-ical") OOP languages like ruby & python.
+see: https://dev.to/crishanks/classical-vs-prototypal-inheritance-2o5a
+
+For demonstrating this within io , we will use the following template that builds on our =Vehicle= object,
+#+NAME: vehicles
+#+begin_src io
+Vehicle := Object clone
+Vehicle description := "Something to take you somewhere"
+
+Car     := Vehicle clone
+ferrari := Car clone
+#+end_src
+
+#+begin_src io :noweb strip-export
+<<vehicles>>
+"Car:" println
+"- slotnames:" print
+Car slotNames println
+"- type: " print Car type println
+"- description: " print
+Car description println
+"" println
+
+"ferrari:" println
+"- slotnames:" print
+ferrari slotNames println
+"- type: " print
+ferrari type
+
+#+end_src
+
+#+RESULTS:
+: Car:
+: - slotnames:list(type)
+: - type: Car
+: - description: Something to take you somewhere
+:
+: ferrari:
+: - slotnames:list()
+: - type: Car
+
+=Car= does not inherently have a =description= slot defined. Rather, io goes up the inheritance tree to the =Vehicle= prototype and finds the slot in =Vehicle=.
+
+Similarly, =ferrari= has no type slot. And because is a clone of the =Car= prototype, io returns the =type= slot value of =Car=.
+
+- io denotes standalone prototypes with ~capitalized~ words, while clones are denoted with ~lowercase~ characters
+- clones have no =type= slot, prototypes do
+
+
+*Methods*
+This is how to define methods
+#+begin_src io
+"methods: " println
+method("this is a method" println) println
+"type: " print
+method() type
+#+end_src
+
+#+RESULTS:
+: methods:
+:
+: # /var/folders/02/3rx3c8b967v796jrrtzflqjr0000gp/T/babel-jmOuYf/io-HwZCop:3
+: method(
+:     "this is a method" println
+: )
+: type: Block
+
+#+begin_src io :noweb strip-export
+<<vehicles>>
+Car drive := method("Vroom" println)
+
+ferrari drive # recall that io always returns a message, so this code block's evaluation has the actual printed line, and the returned message
+#+end_src
+
+#+RESULTS:
+: Vroom
+: Vroom
+
+*io's Prototype OOP summary*
+- Everything is an object
+- Every interaction with an object is a message
+- no class instantiation; only cloning of prototype-objects
+- Objects remember their prototypes
+- Objects have slots; slots contain objects (including method objects)
+- Messages return the value in a slot, or invoke the slot's method
+- If an object cannot respond to message, it sends that message to its prototype
+
+
+
+*Lists & Maps*
