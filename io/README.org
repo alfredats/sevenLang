@@ -155,4 +155,148 @@ ferrari drive # recall that io always returns a message, so this code block's ev
 
 
 
-*Lists & Maps*
+*Collections*
+
+basic collections are =List= (prototype for all list-types) and =Map= (prototype for all key-value pairs)
+
+#+NAME: todoList
+#+begin_src io
+toDos := list("Find cat", "Feed cat", "Clean litterbox")
+toDos size println
+toDos append("Get catnip")
+#+end_src
+
+#+RESULTS: todoList
+: 3
+: list(Find cat, Feed cat, Clean litterbox, Get catnip)
+
+some basic list methods
+- average
+- sum
+- at(~index~)
+- append(~elem~)
+- pop
+- prepend(~elem~)
+- isEmpty
+
+
+Hashes in io are very similar to io's objects (key/slot-value pairs)
+#+NAME: elvisMap
+#+begin_src io
+elvis := Map clone
+elvis atPut("home", "Graceland")
+elvis at("home") println
+elvis atPut("style", "rock and roll")
+elvis asObject print
+"" println
+elvis asList println
+elvis keys println
+elvis size println
+#+end_src
+
+#+RESULTS: elvisMap
+: Graceland
+:  Object_0x7fbdaaf5bb60:
+:   home             = "Graceland"
+:   style            = "rock and roll"
+:
+: list(list(style, rock and roll), list(home, Graceland))
+: list(style, home)
+: 2
+: 2
+
+
+
+*Boolean operators & values*
+
+io has the typical comparison and logical operators:
+- <, <=, >, >=
+- and, or
+
+Something to note about the truthiness of values:
+#+begin_src io
+(true and list("")) println
+(true and 0) println
+
+emptyHash := Map clone
+(true and emptyHash)
+#+end_src
+
+#+RESULTS:
+: true
+: true
+: true
+
+
+Here's an interesting thing about =true=, =false= and =nil=:
+
+#+begin_src io
+true protos print writeln
+true clone protos print writeln
+#+end_src
+
+#+RESULTS:
+#+begin_example
+list( Object_0x7fbedfc05f00:
+                   = Object_()
+  !=               = Object_!=()
+  -                = Object_-()
+  ..               = method(arg, ...)
+  ... # so on and so forth
+  writeln          = Object_writeln()
+  yield            = method(...)
+)
+list( Object_0x7fbedfc05f00:
+                   = Object_()
+  !=               = Object_!=()
+  -                = Object_-()
+  ..               = method(arg, ...)
+  ... # so on and so forth
+  writeln          = Object_writeln()
+  yield            = method(...)
+)
+#+end_example
+
+They're singleton objects! Notice how =true= and it's clone inherit from the same object? We can instantiate our own singletons as follows:
+
+#+NAME: mySingleton
+#+begin_src io
+MySingleton := Object clone
+MySingleton clone := MySingleton
+#+end_src
+
+#+RESULTS: mySingleton
+:  MySingleton_0x7fdcc4a0c6d0:
+:   clone            = MySingleton_0x7fdcc4a0c6d0
+:   type             = "MySingleton"
+
+
+#+begin_src io :noweb strip-export
+<<mySingleton>>
+s1 := MySingleton clone
+s2 := MySingleton clone
+s1 == s2
+#+end_src
+
+#+RESULTS:
+: true
+
+The clones made from singleton values are equal! Meanwhile, if you did this with a the prototypical =Object=,
+
+#+begin_src io
+o1 := Object clone
+o2 := Object clone
+o1 == o2
+#+end_src
+
+#+RESULTS:
+: false
+
+*** Self-Study
+*Find*
+
+
+*Answer*
+
+
+*Do*
