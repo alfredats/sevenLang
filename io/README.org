@@ -294,9 +294,98 @@ o1 == o2
 
 *** Self-Study
 *Find*
+1)
 
+2)
+
+3) https://en.wikibooks.org/wiki/Io_Programming/Io_Style_Guide
 
 *Answer*
+1) Io is strongly typed. Values are strictly bound to a type, and io does not allow coercion/conversion of values at runtime.
+
+   Also, io is implicitly typed (no need to explicitly mention the type of an expression) as well as dynamically typed (types are assigned and checked at runtime within the interpreter).
+
+#+begin_src io
+1 + "1"
+#+end_src
+
+#+RESULTS:
+:
+:   Exception: argument 0 to method '+' must be a Number, not a 'Sequence'
+:   ---------
+:   +                                   io-kVcoTV 2
+:   CLI doFile                           Z_CLI.io 140
+:   CLI run                              IoState_runCLI() 1
+:
+
+
+2)
+#+begin_src io
+truthy := method(a, writeln(a and true))
+
+truthy(0)
+truthy("")
+truthy(nil)
+#+end_src
+
+#+RESULTS:
+: true
+: true
+: false
+: nil
+
+
+3) Using the =vehicles= examples from above, we use the =protos= slot to identify the prototypes that an object inherits from, as well as any methods available within the prototypes.
+
+   #+begin_src io :noweb strip-export
+<<vehicles>>
+Car protos
+   #+end_src
+
+   #+RESULTS:
+   : list( Vehicle_0x7fef04771cd0:
+   :   description      = "Something to take you somewhere"
+   :   type             = "Vehicle"
+   : )
+
+   #+begin_src io :noweb strip-export
+<<vehicles>>
+ferrari protos
+   #+end_src
+
+   #+RESULTS:
+   : list( Car_0x7fdd4b980af0:
+   :   type             = "Car"
+   : )
+
+4) (mentioned above)
+#+begin_src io
+Vehicle year        ::= "2010" # creates slot, creates setter, assigns value; newSlot
+Vehicle description  := "Something to take you places" # creates slot, assigns value; setSlot
+Vehicle model         = "Ford Focus" #assigns value to slot if exists, else exception; updateSlot
+#+end_src
 
 
 *Do*
+
+1)
+#+begin_src io :tangle hello_world.io
+"hello, world!" writeln
+#+end_src
+
+#+begin_src bash :results output
+io hello_world.io
+#+end_src
+
+#+RESULTS:
+: hello, world!
+
+
+2) see =getSlot= and =call=, as well as "Blocks vs. Methods"
+
+   #+begin_src io
+Object getSlot("list") call(1,2,3,4)
+   #+end_src
+
+   #+RESULTS:
+   : list(1, 2, 3, 4)
