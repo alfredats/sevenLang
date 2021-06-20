@@ -503,3 +503,31 @@ sudokuTest(X) :-
 
 
    #+end_src
+
+* Solving the Mary's Ideal question with CLP(B)
+So after a short conversation with meng about logic programming (sCASP in particular), he suggested I look at CLP before looking at ASP then sCASP.
+
+Since prolog has some level of CLP abilities with CLP(FD) and CLP(B), I thought I'd replicate it the Mary's Ideal question that Joey previously worked on with Alloy.
+
+#+begin_src prolog :tangle MarysIdeal.pl
+:- use_module(library(clpb)).
+
+%% Original question: (From Summers 1968, puzzle 5).
+%%
+%% Mary's ideal man is tall, dark, and handsome. She knows four men: Alec, Bill, Carl, and Dave.
+%% Only one of the four men has all of the characteristics Mary requires.
+%% Only three of the men are tall, only two are dark, and only one is handsome.
+%% Each of the four men has at least one of the required traits.
+%% Alec and Bill have the same complexion.
+%% Bill and Carl are the same height.
+%% Carl and Dave are not both tall.
+%% Which one of the four men satisfies all of Mary's requirements?
+
+%% Define the variables t, d & h as follows:
+%%   t -> tall ; short
+%%   d -> dark ; fair
+%%   h -> handsome; not-handsome
+
+%% Each variable is in a universe of its own?
+
+#+end_src
