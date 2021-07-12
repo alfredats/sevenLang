@@ -6,5 +6,6 @@
     # Also, to find out what packages are available for use, https://search.nixos.org
     nativeBuildInputs = [ pkgs.ruby
                           pkgs.swiProlog
-                          pkgs.openjdk11 ]; # io lang package does not support osX, use "brew install io" instead
+                          pkgs.openjdk11 
+                          pkgs.postgresql_13 ]; # io lang package does not support osX, use "brew install io" instead
 }
