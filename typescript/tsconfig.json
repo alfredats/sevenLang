@@ -1,0 +1,14 @@
+// To get a full list of support TSC options, see https://www.typescriptlang.org/tsconfig
+{
+  "compilerOptions": {
+    "lib": ["es2020"], // What APIs should TSC assume exists in the runtime environment?
+    "module": "commonjs", // What module system should TSC compile to?
+    "outDir": "dist", // Where should TSC output the generated JS code?
+    "sourceMap": true, 
+    "strict": true, // Tells TSC to be as strict as possible when typechecking
+    "target": "es2020" // Which JS version should TSC compile to?
+  },
+  "include": [ //where TSC should look to find TypeScript files
+    "src/**/*"
+  ]
+}
