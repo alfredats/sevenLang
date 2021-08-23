@@ -7,16 +7,17 @@
 //  2520 is the lcm of [1, 2, 3, .., 10]
 
 // general approach: 
-//  1. initialize an array "factors"
-//  2. for i = 1; i < ulim; i++
-//      2a. for each elem in [x1,x2,...]
-//          2ai.    initialize an array called "result"
-//          2aii.   compute quot = elem/i
-//          2aiii.  if quot is whole, append quot to "result"
-//          2aiv.   else, append elem to result
-//      2b. if array is unchanged after 2a, increment i
-//      2c. else, append i to "factors"
-//  3. compute cumulative product of "factors"
+//  Given an array [x1,x2,...]
+//  1. initialize an array "factors", and an array "quotients"
+//  2. while quotients is non-empty
+//      2a. initialize an array "results"
+//      2b. for each "elem" in [x1,x2,...]
+//          2ai.   compute "quot = elem/i"
+//          2aii.  if "quot" is whole, append "quot" to "results"
+//          2aiii.   else, append "elem" to "results"
+//      2c. if "results" == "quotients", increment i
+//      2d. else, append i to "factors"
+//  3. compute cumulative product of "factors""
 
 export function lowestCommonMultiple(nums: number[]): number {
     const factgen = genFactors(nums)
