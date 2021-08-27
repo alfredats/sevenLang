@@ -1,5 +1,7 @@
 // This is a solution for project euler's question 5
 
+import { match } from "assert/strict"
+
 // problem statement:
 //  Given an array of numbers [x1, x2, ...], find their lowest common multiple
 
@@ -58,4 +60,32 @@ export function* genFactors(numArr: number[]): Generator<number> {
 
         temp = quots.filter((val) => val > 1)
     } while (temp.length > 0)
+}
+
+
+
+// Trying out a different approach
+function gcd(m: number, n: number): number {
+    // Compute gcd of 2 numbers via Euclid's algorithm
+    while (n !== 0) {
+        const i = m%n
+        m = n
+        n = i
+    }
+
+    return m
+}
+
+function lcm(m: number, n: number): number {
+    return Math.floor(m*n / gcd(m,n))
+}
+
+export function lcmArray(nums: number[]):number {
+    if (nums.length === 0) {
+        return 1
+    } else {
+        const head = nums[0]
+        const tail = nums.slice(1,nums.length)
+        return lcm(head, lcmArray(tail)) 
+    }
 }

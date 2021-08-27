@@ -1,6 +1,10 @@
 import { sumUpToMultiplesOf } from './euler1.js'
 import { sumEvenFibNumUpTo } from './euler2.js'
-import { lowestCommonMultiple } from './euler5.js'
+import { lowestCommonMultiple, lcmArray } from './euler5.js'
+
+
+// TODO:
+// figure out how to time my code
 
 // question 1
 const q1 = sumUpToMultiplesOf(1000, 3, 5)
@@ -18,3 +22,4 @@ for (let i = 1; i < 20; i++ ) {
 }
 const q5 = lowestCommonMultiple(q5Arr)
 console.log('q5: ', q5)
+console.log('q5: ', lcmArray(q5Arr) )
