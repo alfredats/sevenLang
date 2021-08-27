@@ -1,5 +1,6 @@
 import { sumUpToMultiplesOf } from './euler1.js'
 import { sumEvenFibNumUpTo } from './euler2.js'
+import { largestPrimeFactor } from './euler3.js'
 import { lowestCommonMultiple, lcmArray } from './euler5.js'
 
 
@@ -14,6 +15,10 @@ console.log('q1: ', q1)
 // question 2
 const q2 = sumEvenFibNumUpTo(4000000)
 console.log('q2: ', q2)
+
+const q3 = largestPrimeFactor(600851475143)
+console.log('q3: ', q3)
+
 
 // question 5
 const q5Arr: number[] = []
