@@ -1,8 +1,8 @@
 import { sumUpToMultiplesOf } from '../src/euler1'
 import { sumEvenFibNumUpTo } from '../src/euler2'
 import { largestPrimeFactor } from '../src/euler3'
+import { isPalindrome, Tuple, zipArrays } from '../src/euler4'
 import { lowestCommonMultiple, lcmArray } from '../src/euler5'
-
 
 // TODO:
 // figure out how to time my code
@@ -24,6 +24,21 @@ test("Q3 returns 29 for largest prime factor of 13195", () => {
     const q3 = largestPrimeFactor(13195)
     expect(q3).toBe(29)
 })
+
+// q3
+test("Q4 returns true for 9009", () => {
+    expect(isPalindrome(9009)).toBe(true)
+})
+
+test("Q4: zipArrays", () => {
+    expect(zipArrays([1,2],[3,4])).toStrictEqual(
+        [   new Tuple(1,3), 
+            new Tuple(1,4),
+            new Tuple(2,3),
+            new Tuple(2,4)
+        ])
+})
+
 
 // q5
 test("Q5 returns 2520 as lcm of Array.from(Array(10),(_,i) => i", () =>{

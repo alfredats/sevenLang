@@ -1,7 +1,5 @@
 // This is a solution for project euler's question 5
 
-import { match } from "assert/strict"
-
 // problem statement:
 //  Given an array of numbers [x1, x2, ...], find their lowest common multiple
 
