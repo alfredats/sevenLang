@@ -1,7 +1,7 @@
-"use strict";
-// This is a solution for project euler's question 2
+'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateFibonacci = exports.sumEvenFibNumUpTo = void 0;
+// This is a solution for project euler's question 2
 // Question Statement:
 //  Considering the terms in the fibonacci seq up to 4 million, find
 //  the sum of the even-valued terms

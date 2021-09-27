@@ -1,3 +1,4 @@
+'use strict';
 // This is a solution for project euler's question 2
 
 // Question Statement:
