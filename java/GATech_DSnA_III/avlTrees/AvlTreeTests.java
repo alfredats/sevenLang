@@ -1,6 +1,6 @@
 public class AvlTreeTests {
   public static void main(String[] args) {
-    pln("----- AVL NODE -----"); 
+    pln("----- AVL NODE -----");
 
     pln("-- init N1 --");
     AvlNode<Integer> n1 = new AvlNode<Integer>(3);
@@ -20,7 +20,6 @@ public class AvlTreeTests {
     n1.setRight(n3);
     System.out.printf("Expect n1 height 1, actual: %s\n", n1.getHeight());
     System.out.printf("Expect n1 BF 0, actual: %s\n", n1.getBalanceFactor());
-
 
     pln("");
     pln("");
@@ -45,25 +44,47 @@ public class AvlTreeTests {
     pln("-- add --");
     System.out.println("Current tree: " + t.toString());
     t.add(4);
-    System.out.printf("After add 3, tree: %s\n", t.toString());
+    System.out.printf(">>> After add 3, tree: %s\n", t.toString());
     t.add(6);
-    System.out.printf("After add 5, tree: %s\n", t.toString());
+    System.out.printf(">>> After add 5, tree: %s\n", t.toString());
     t.add(2);
-    System.out.printf("After add 2, tree: %s\n", t.toString());
+    System.out.printf(">>> After add 2, tree: %s\n", t.toString());
     t.add(0);
-    System.out.printf("After add 0, tree: %s\n", t.toString());
-    
+    System.out.printf(">>> After add 0, tree: %s\n", t.toString());
+
     pln("");
     pln("-- remove --");
     pln(">>> no child case");
-    t.remove(0);
-    System.out.printf("After remove 0, tree: %s\n", t.toString());
+
+    pln("Remove " + t.remove(0).getValue());
+    System.out.printf(">>> After remove 0, tree: %s\n", t.toString());
     pln(">>> XOR case");
-    t.remove(1);
-    System.out.printf("After remove 1, tree: %s\n", t.toString());
+    pln("Remove " + t.remove(1).getValue());
+    System.out.printf(">>> After remove 1, tree: %s\n", t.toString());
     pln(">>> successor case");
-    t.remove(3);
-    System.out.printf("After remove 3, tree: %s\n", t.toString());
+    pln("Remove " + t.remove(3).getValue());
+    System.out.printf(">>> After remove 3, tree: %s\n", t.toString());
+
+    pln("");
+    pln("-- balance --");
+    System.out.println("Current Tree: " + t.toString());
+    pln("Add 10 to make 5 to trigger left rotation");
+    t.add(10);
+    pln(">>> After add 10, tree: " + t.toString());
+    pln("Add 1, 0 to 2 to trigger right rotation");
+    t.add(1);
+    t.add(0);
+    pln(">>> After add 1, 0, tree: " + t.toString());
+    pln("Add 7, 9 to trigger left-right rotation");
+    t.add(7);
+    pln(">>> After add 7, tree: " + t.toString());
+    t.add(9);
+    pln(">>> After add 9, tree: " + t.toString());
+    pln(">>> Add 13, 11 to trigger right left rotation");
+    t.add(13);
+    pln(">>> After add 13, tree: " + t.toString());
+    t.add(11);
+    pln(">>> After add 11, tree: " + t.toString());
   }
 
   public static void pln(String str) {
